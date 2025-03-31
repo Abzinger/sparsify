@@ -180,10 +180,22 @@ class SparseCoder(nn.Module):
         """Encode the input and select the top-k latents."""
         if not self.cfg.transcode:
             x = x - self.b_dec
-
-        return fused_encoder(
-            x, self.encoder.weight, self.encoder.bias, self.cfg.k, self.cfg.activation
-        )
+        if not self.cfg.quantization:
+            return fused_encoder(
+                x, self.encoder.weight, self.encoder.bias, self.cfg.k, self.cfg.activation,
+                quantization=False,
+                min_val=None,
+                max_val=None,
+                levels=None,
+                )
+        else:
+            return fused_encoder(
+                x, self.encoder.weight, self.encoder.bias, self.cfg.k, self.cfg.activation,
+                quantization=True,
+                min_val=self.cfg.quantization_min,
+                max_val=self.cfg.quantization_max,
+                levels=self.cfg.quantization_levels,
+            )
 
     def decode(self, top_acts: Tensor, top_indices: Tensor) -> Tensor:
         assert self.W_dec is not None, "Decoder weight was not initialized."

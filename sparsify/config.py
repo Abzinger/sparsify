@@ -14,6 +14,18 @@ class SparseCoderConfig(Serializable):
     activation: Literal["groupmax", "topk"] = "topk"
     """Activation function to use."""
 
+    quantization: bool = False
+    """Whether to quantize the activations."""
+
+    quantization_min: int = -1
+    """Minimum value for quantization."""
+
+    quantization_max: int = 1
+    """Maximum value for quantization."""
+    
+    quantization_levels: int = 2**16
+    """Number of levels to use for quantization."""
+    
     expansion_factor: int = 32
     """Multiple of the input dimension to use as the SAE dimension."""
 
