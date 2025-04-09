@@ -88,18 +88,18 @@ class Trainer:
 
         match cfg.optimizer:
             case "adam":
-                try:
-                    from bitsandbytes.optim import Adam8bit as Adam
+                # try:
+                #     from bitsandbytes.optim import Adam8bit as Adam
 
-                    print("Using 8-bit Adam from bitsandbytes")
-                except ImportError:
-                    from torch.optim import Adam
+                #     print("Using 8-bit Adam from bitsandbytes")
+                # except ImportError:
+                #     from torch.optim import Adam
 
-                    print(
-                        "bitsandbytes 8-bit Adam not available, using torch.optim.Adam"
-                    )
-                    print("Run `pip install bitsandbytes` for less memory usage.")
-
+                #     print(
+                #         "bitsandbytes 8-bit Adam not available, using torch.optim.Adam"
+                #     )
+                #     print("Run `pip install bitsandbytes` for less memory usage.")
+                from torch.optim import Adam
                 pgs = [
                     dict(
                         params=sae.parameters(),
