@@ -30,7 +30,8 @@ class QuantizedFusedEncoder(torch.autograd.Function):
         levels:  number of quantization levels
         """
         # Quantize using relu6 for now but might switch to hardtanh later
-        out = F.relu6(F.linear(input, weight, bias))
+        # out = F.relu6(F.linear(input, weight, bias))
+        out = F.hardtanh(F.linear(input, weight, bias), min_val, max_val)
         # Convert to continuous levels between 0 and levels-1
         x_scaled = (out - min_val) * (levels - 1) / (max_val - min_val)
 		# Get lower discrete level
